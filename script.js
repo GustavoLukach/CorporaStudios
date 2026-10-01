@@ -1,48 +1,6 @@
 /* =========================
-   MENU HAMBÚRGUER
+   FILTROS E LIGHTBOX
 ========================= */
-
-const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelector(".nav-links");
-
-function fecharMenu() {
-  if (!menuToggle || !navLinks) {
-    return;
-  }
-
-  navLinks.classList.remove("active");
-
-  menuToggle.setAttribute("aria-expanded", "false");
-  menuToggle.setAttribute("aria-label", "Abrir menu");
-
-  document.body.classList.remove("menu-aberto");
-}
-
-if (menuToggle && navLinks) {
-  menuToggle.addEventListener("click", () => {
-    const menuAberto = navLinks.classList.toggle("active");
-
-    menuToggle.setAttribute("aria-expanded", String(menuAberto));
-    menuToggle.setAttribute(
-      "aria-label",
-      menuAberto ? "Fechar menu" : "Abrir menu"
-    );
-
-    document.body.classList.toggle("menu-aberto", menuAberto);
-  });
-
-  const linksDoMenu = navLinks.querySelectorAll("a");
-
-  linksDoMenu.forEach((link) => {
-    link.addEventListener("click", fecharMenu);
-  });
-}
-
-
-/* =========================
-   FILTROS DA GALERIA
-========================= */
-
 function inicializarGaleria() {
   const categoryButtons = Array.from(
     document.querySelectorAll(".category-button")
@@ -52,73 +10,82 @@ function inicializarGaleria() {
     document.querySelectorAll(".gallery-item")
   );
 
-  let galleryItemsVisiveis = [...todosGalleryItems];
+  const lightbox =
+    document.querySelector("#lightbox");
+
+  const lightboxImage =
+    document.querySelector("#lightbox-image");
+
+  const lightboxTitle =
+    document.querySelector("#lightbox-title");
+
+  const lightboxCategory =
+    document.querySelector("#lightbox-category");
+
+  const lightboxCounter =
+    document.querySelector("#lightbox-counter");
+
+  const lightboxClose =
+    document.querySelector("#lightbox-close");
+
+  const lightboxPrev =
+    document.querySelector("#lightbox-prev");
+
+  const lightboxNext =
+    document.querySelector("#lightbox-next");
+
+  if (
+    todosGalleryItems.length === 0 ||
+    !lightbox
+  ) {
+    return;
+  }
+
+  let galleryItemsVisiveis =
+    [...todosGalleryItems];
+
   let imagemAtual = 0;
 
-  function atualizarFiltro(filtroSelecionado) {
-    galleryItemsVisiveis = todosGalleryItems.filter((item) => {
-      return (
-        filtroSelecionado === "todos" ||
-        item.dataset.category === filtroSelecionado
-      );
-    });
+  function atualizarFiltro(filtro) {
+    const filtroNormalizado = filtro.trim().toLowerCase();
+
+    galleryItemsVisiveis =
+      todosGalleryItems.filter((item) => {
+        const categoria =
+          (item.dataset.category || "").trim().toLowerCase();
+
+        return (
+          filtroNormalizado === "todos" ||
+          categoria === filtroNormalizado
+        );
+      });
 
     todosGalleryItems.forEach((item) => {
-      const deveMostrar =
-        galleryItemsVisiveis.includes(item);
-
       item.classList.toggle(
         "hidden",
-        !deveMostrar
+        !galleryItemsVisiveis.includes(item)
       );
     });
   }
 
   categoryButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const filtroSelecionado =
-        button.dataset.filter;
-
       categoryButtons.forEach((item) => {
         item.classList.remove("active");
       });
 
       button.classList.add("active");
 
-      atualizarFiltro(filtroSelecionado);
+      atualizarFiltro(
+        button.dataset.filter
+      );
     });
   });
 
-  const lightbox = document.querySelector("#lightbox");
-  const lightboxImage =
-    document.querySelector("#lightbox-image");
-  const lightboxTitle =
-    document.querySelector("#lightbox-title");
-  const lightboxCategory =
-    document.querySelector("#lightbox-category");
-  const lightboxCounter =
-    document.querySelector("#lightbox-counter");
-
-  const lightboxClose =
-    document.querySelector("#lightbox-close");
-  const lightboxPrev =
-    document.querySelector("#lightbox-prev");
-  const lightboxNext =
-    document.querySelector("#lightbox-next");
-
-  function formatarCategoria(categoria) {
-    const categorias = {
-      casamento: "Corporativo",
-      gestante: "Gestante",
-      familia: "Comercial",
-      pessoal: "Pessoal"
-    };
-
-    return categorias[categoria] || categoria;
-  }
-
-  function mostrarImagem(index) {
-    if (galleryItemsVisiveis.length === 0) {
+  function atualizarLightbox(index) {
+    if (
+      galleryItemsVisiveis.length === 0
+    ) {
       return;
     }
 
@@ -133,30 +100,27 @@ function inicializarGaleria() {
       imagemAtual = index;
     }
 
-    const itemAtual =
+    const item =
       galleryItemsVisiveis[imagemAtual];
 
-    const imagem =
-      itemAtual.querySelector("img");
+    const image =
+      item.querySelector("img");
 
-    lightboxImage.src = imagem.src;
-    lightboxImage.alt = imagem.alt;
+    lightboxImage.src = image.src;
+    lightboxImage.alt = image.alt;
 
     lightboxTitle.textContent =
-      itemAtual.dataset.title ||
-      imagem.alt;
+      item.dataset.title || image.alt;
 
     lightboxCategory.textContent =
-      formatarCategoria(
-        itemAtual.dataset.category
-      );
+      item.dataset.category || "Galeria";
 
     lightboxCounter.textContent =
       `${imagemAtual + 1} / ${galleryItemsVisiveis.length}`;
   }
 
   function abrirLightbox(index) {
-    mostrarImagem(index);
+    atualizarLightbox(index);
 
     lightbox.classList.add("active");
     lightbox.setAttribute(
@@ -198,11 +162,11 @@ function inicializarGaleria() {
   );
 
   lightboxPrev.addEventListener("click", () => {
-    mostrarImagem(imagemAtual - 1);
+    atualizarLightbox(imagemAtual - 1);
   });
 
   lightboxNext.addEventListener("click", () => {
-    mostrarImagem(imagemAtual + 1);
+    atualizarLightbox(imagemAtual + 1);
   });
 
   lightbox.addEventListener("click", (event) => {
@@ -212,247 +176,7 @@ function inicializarGaleria() {
   });
 }
 
-/*
-  Só inicializa filtros e lightbox depois
-  que as imagens vierem do Supabase.
-*/
 document.addEventListener(
   "gallery:loaded",
   inicializarGaleria
 );
-
-
-
-/* =========================
-   LIGHTBOX
-========================= */
-
-const lightbox = document.querySelector("#lightbox");
-const lightboxImage = document.querySelector("#lightbox-image");
-const lightboxTitle = document.querySelector("#lightbox-title");
-const lightboxCategory = document.querySelector("#lightbox-category");
-const lightboxCounter = document.querySelector("#lightbox-counter");
-
-const lightboxClose = document.querySelector("#lightbox-close");
-const lightboxPrev = document.querySelector("#lightbox-prev");
-const lightboxNext = document.querySelector("#lightbox-next");
-
-let imagemAtual = 0;
-
-function formatarCategoria(categoria) {
-  const categorias = {
-    Corporativo: "Corporativo",
-    gestante: "Gestante",
-    Comercial: "Comercial     ",
-    pessoal: "Pessoal"
-  };
-
-  return categorias[categoria] || categoria || "Galeria";
-}
-
-function atualizarLightbox(index) {
-  if (
-    !lightboxImage ||
-    !lightboxTitle ||
-    !lightboxCategory ||
-    !lightboxCounter ||
-    galleryItemsVisiveis.length === 0
-  ) {
-    return;
-  }
-
-  // Navegação circular:
-  // depois da última imagem, volta para a primeira;
-  // antes da primeira, vai para a última.
-  if (index < 0) {
-    imagemAtual = galleryItemsVisiveis.length - 1;
-  } else if (index >= galleryItemsVisiveis.length) {
-    imagemAtual = 0;
-  } else {
-    imagemAtual = index;
-  }
-
-  const itemAtual = galleryItemsVisiveis[imagemAtual];
-  const imagem = itemAtual.querySelector("img");
-
-  if (!imagem) {
-    return;
-  }
-
-  const titulo =
-    itemAtual.dataset.title ||
-    imagem.alt ||
-    "Fotografia";
-
-  const categoria =
-    itemAtual.dataset.category ||
-    "Galeria";
-
-  lightboxImage.src = imagem.src;
-  lightboxImage.alt = imagem.alt;
-
-  lightboxTitle.textContent = titulo;
-  lightboxCategory.textContent = formatarCategoria(categoria);
-
-  lightboxCounter.textContent =
-    `${imagemAtual + 1} / ${galleryItemsVisiveis.length}`;
-}
-
-function abrirLightbox(index) {
-  if (
-    !lightbox ||
-    galleryItemsVisiveis.length === 0
-  ) {
-    return;
-  }
-
-  atualizarLightbox(index);
-
-  lightbox.classList.add("active");
-  lightbox.setAttribute("aria-hidden", "false");
-
-  document.body.classList.add("lightbox-aberto");
-
-  if (lightboxClose) {
-    lightboxClose.focus();
-  }
-}
-
-function fecharLightbox() {
-  if (!lightbox) {
-    return;
-  }
-
-  lightbox.classList.remove("active");
-  lightbox.setAttribute("aria-hidden", "true");
-
-  document.body.classList.remove("lightbox-aberto");
-
-  if (lightboxImage) {
-    lightboxImage.src = "";
-  }
-}
-
-
-// Abre a imagem clicada
-todosGalleryItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    const index = galleryItemsVisiveis.indexOf(item);
-
-    // Só abre se a imagem estiver visível no filtro atual
-    if (index !== -1) {
-      abrirLightbox(index);
-    }
-  });
-
-  // Permite abrir com Enter ou Espaço
-  item.setAttribute("tabindex", "0");
-
-  item.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      const index = galleryItemsVisiveis.indexOf(item);
-      abrirLightbox(index);
-    }
-  });
-});
-
-if (lightboxClose) {
-  lightboxClose.addEventListener("click", fecharLightbox);
-}
-
-if (lightboxPrev) {
-  lightboxPrev.addEventListener("click", () => {
-    if (galleryItemsVisiveis.length === 0) {
-      return;
-    }
-
-    const indexAnterior =
-      (imagemAtual - 1 + galleryItemsVisiveis.length) %
-      galleryItemsVisiveis.length;
-
-    atualizarLightbox(indexAnterior);
-  });
-}
-
-if (lightboxNext) {
-  lightboxNext.addEventListener("click", () => {
-    if (galleryItemsVisiveis.length === 0) {
-      return;
-    }
-
-    const indexProximo = (imagemAtual + 1) % galleryItemsVisiveis.length;
-    atualizarLightbox(indexProximo);
-  });
-}
-
-document.addEventListener("keydown", (event) => {
-  if (!lightbox || !lightbox.classList.contains("active")) {
-    return;
-  }
-
-  if (event.key === "Escape") {
-    fecharLightbox();
-  } else if (event.key === "ArrowLeft") {
-    const indexAnterior =
-      (imagemAtual - 1 + galleryItemsVisiveis.length) %
-      galleryItemsVisiveis.length;
-
-    atualizarLightbox(indexAnterior);
-  } else if (event.key === "ArrowRight") {
-    const indexProximo = (imagemAtual + 1) % galleryItemsVisiveis.length;
-    atualizarLightbox(indexProximo);
-  }
-});
-
-const contactForm = document.querySelector(".contact-form");
-const formStatus = document.querySelector("#form-status");
-const formSubmit = document.querySelector(".form-submit");
-
-if (contactForm && formStatus && formSubmit) {
-  contactForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    formStatus.textContent = "Enviando mensagem...";
-    formStatus.className = "form-status loading";
-    formSubmit.disabled = true;
-    formSubmit.textContent = "Enviando...";
-
-    const formData = new FormData(contactForm);
-
-    try {
-      const response = await fetch(contactForm.action, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json"
-        }
-      });
-
-      if (response.ok) {
-        formStatus.textContent = "Sua mensagem foi enviada.";
-        formStatus.className = "form-status success";
-
-        contactForm.reset();
-
-        formSubmit.disabled = false;
-        formSubmit.textContent = "Mensagem enviada";
-      } else {
-        formStatus.textContent =
-          "Não foi possível enviar sua mensagem. Tente novamente.";
-        formStatus.className = "form-status error";
-
-        formSubmit.disabled = false;
-        formSubmit.textContent = "Enviar mensagem";
-      }
-    } catch (error) {
-      formStatus.textContent =
-        "Ocorreu um erro de conexão. Tente novamente.";
-      formStatus.className = "form-status error";
-
-      formSubmit.disabled = false;
-      formSubmit.textContent = "Enviar mensagem";
-    }
-  });
-}
-

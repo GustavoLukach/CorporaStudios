@@ -1,18 +1,11 @@
-const SUPABASE_URL =
-  "https://zgfnfulcsebqfcnkmijf.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_A0rFdnpY_8DmQWM5raDQeA_JWFOf89T";
-
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
- );
-
 const gallery = document.querySelector("#gallery");
 const galleryMessage = document.querySelector("#gallery-message");
 
 async function carregarGaleria() {
+  if (!gallery) {
+    return;
+  }
+
   const { data: images, error } =
     await supabaseClient
       .from("gallery_images")
@@ -22,11 +15,11 @@ async function carregarGaleria() {
       });
 
   if (error) {
-    console.error("Erro ao carregar imagens:", error);
+    console.error("Erro ao carregar galeria:", error);
 
     if (galleryMessage) {
       galleryMessage.textContent =
-        "Não foi possível carregar a galeria.";
+        "Não foi possível carregar as imagens.";
     }
 
     return;
@@ -44,12 +37,12 @@ async function carregarGaleria() {
   gallery.innerHTML = "";
 
   images.forEach((image) => {
-    const galleryItem = document.createElement("div");
+    const item = document.createElement("div");
 
-    galleryItem.className = "gallery-item";
-    galleryItem.dataset.category = image.category;
-    galleryItem.dataset.title = image.title;
-    galleryItem.dataset.id = image.id;
+    item.className = "gallery-item";
+    item.dataset.category = image.category;
+    item.dataset.title = image.title;
+    item.dataset.id = image.id;
 
     const imageElement = document.createElement("img");
 
@@ -57,21 +50,13 @@ async function carregarGaleria() {
     imageElement.alt = image.alt_text;
     imageElement.loading = "lazy";
 
-    galleryItem.appendChild(imageElement);
-    gallery.appendChild(galleryItem);
+    item.appendChild(imageElement);
+    gallery.appendChild(item);
   });
 
-  /*
-    Avisa o script.js que as imagens já foram criadas.
-    Isso é importante para os filtros e o lightbox funcionarem.
-  */
   document.dispatchEvent(
     new CustomEvent("gallery:loaded")
   );
 }
 
 carregarGaleria();
-
-document.dispatchEvent(
-  new CustomEvent("gallery:loaded" )
-);

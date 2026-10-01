@@ -6,76 +6,235 @@
 
   <title>Admin | Corpora Studio</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    defer
+  ></script>
+
+  <script src="supabase-client.js" defer></script>
   <script src="admin.js" defer></script>
 </head>
 
 <body>
   <main class="admin-page">
-    <section id="login-section" class="admin-card">
-      <p class="section-label">CORPORA STUDIO</p>
 
-      <h1>Área administrativa</h1>
+    <!-- =========================
+         TELA DE LOGIN
+    ========================== -->
+
+    <section
+      id="login-section"
+      class="admin-card login-card"
+    >
+      <p class="section-label">
+        CORPORA STUDIO
+      </p>
+
+      <h1>
+        Área administrativa
+      </h1>
 
       <form id="login-form">
         <div class="form-field">
-          <label for="admin-email">E-mail</label>
+          <label for="admin-email">
+            E-mail
+          </label>
 
           <input
             type="email"
             id="admin-email"
             placeholder="seuemail@exemplo.com"
+            autocomplete="email"
             required
           >
         </div>
 
         <div class="form-field">
-          <label for="admin-password">Senha</label>
+          <label for="admin-password">
+            Senha
+          </label>
 
           <input
             type="password"
             id="admin-password"
             placeholder="Digite sua senha"
+            autocomplete="current-password"
             required
           >
         </div>
 
-        <button class="form-submit" type="submit">
+        <button
+          class="admin-button"
+          type="submit"
+        >
           Entrar
         </button>
 
-        <p id="login-message" class="admin-message"></p>
+        <p
+          id="login-message"
+          class="admin-message"
+          role="status"
+          aria-live="polite"
+        ></p>
       </form>
     </section>
 
-    <section id="admin-section" class="admin-card" hidden>
+
+    <!-- =========================
+         PAINEL ADMINISTRATIVO
+    ========================== -->
+
+    <section
+      id="admin-section"
+      class="admin-card"
+      hidden
+    >
       <div class="admin-header">
         <div>
-          <p class="section-label">PAINEL PRIVADO</p>
-          <h1>Gerenciar galeria</h1>
+          <p class="section-label">
+            PAINEL PRIVADO
+          </p>
+
+          <h1>
+            Gerenciar imagens
+          </h1>
         </div>
 
-        <button id="logout-button" type="button">
+        <button
+          id="logout-button"
+          class="logout-button"
+          type="button"
+        >
           Sair
         </button>
       </div>
 
+
+      <!-- =========================
+           FORMULÁRIO DE UPLOAD
+      ========================== -->
+
       <form id="upload-form">
+
         <div class="form-field">
-          <label for="image-file">Imagem</label>
+          <label for="image-page">
+            Página
+          </label>
+
+          <select id="image-page">
+            <option value="">
+              Nenhuma — adicionar à galeria
+            </option>
+
+            <option value="home">
+              Página inicial
+            </option>
+
+            <option value="sobre">
+              Sobre nós
+            </option>
+
+            <option value="contato">
+              Contato
+            </option>
+          </select>
+        </div>
+
+
+        <div class="form-field">
+          <label for="image-slot">
+            Área da imagem
+          </label>
+
+          <select id="image-slot">
+            <option value="">
+              Nenhuma — adicionar à galeria
+            </option>
+
+            <option value="hero_principal">
+              Home — imagem principal
+            </option>
+
+            <option value="hero_sobre">
+              Sobre — imagem principal
+            </option>
+
+            <option value="olhar_1">
+              Sobre — imagem do olhar 1
+            </option>
+
+            <option value="olhar_2">
+              Sobre — imagem do olhar 2
+            </option>
+
+            <option value="hero_contato">
+              Contato — imagem principal
+            </option>
+          </select>
+        </div>
+
+
+        <p class="mode-description">
+          Para adicionar uma imagem à galeria, deixe
+          Página e Área como “Nenhuma” e escolha uma
+          categoria abaixo.
+        </p>
+
+
+        <div class="form-field">
+          <label for="image-category">
+            Categoria da galeria
+          </label>
+
+          <select id="image-category">
+            <option value="">
+              Escolha uma categoria
+            </option>
+
+            <option value="corporativo">
+              Corporativo
+            </option>
+
+            <option value="comercial">
+              Comercial
+            </option>
+
+            <option value="gestante">
+              Gestante
+            </option>
+
+            <option value="pessoal">
+              Pessoal
+            </option>
+          </select>
+        </div>
+
+
+        <div class="form-field">
+          <label for="image-file">
+            Imagem(ns)
+          </label>
 
           <input
             type="file"
             id="image-file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/avif"
+            multiple
             required
           >
         </div>
 
+        <p class="mode-description">
+          Cada foto será adicionada como um item separado da galeria. Título, descrição e categoria serão aplicados a todas as imagens selecionadas.
+        </p>
+
+
         <div class="form-field">
-          <label for="image-title">Título</label>
+          <label for="image-title">
+            Título para todas as imagens
+          </label>
 
           <input
             type="text"
@@ -85,39 +244,75 @@
           >
         </div>
 
+
         <div class="form-field">
-          <label for="image-alt">Descrição da imagem</label>
+          <label for="image-alt">
+            Descrição para todas as imagens
+          </label>
 
           <input
             type="text"
             id="image-alt"
-            placeholder="Descreva a imagem"
+            placeholder="Descreva o que aparece na imagem"
             required
           >
         </div>
 
-        <div class="form-field">
-          <label for="image-category">Categoria</label>
 
-          <select id="image-category" required>
-            <option value="casamento">Casamento</option>
-            <option value="gestante">Gestante</option>
-            <option value="familia">Família</option>
-            <option value="pessoal">Pessoal</option>
-          </select>
-        </div>
-
-        <button class="form-submit" type="submit">
-          Adicionar imagem
+        <button
+          class="admin-button"
+          type="submit"
+        >
+          Enviar imagem
         </button>
 
-        <p id="upload-message" class="admin-message"></p>
+        <p
+          id="upload-message"
+          class="admin-message"
+          role="status"
+          aria-live="polite"
+        ></p>
       </form>
 
-      <section>
-        <h2>Imagens cadastradas</h2>
 
-        <div id="admin-gallery"></div>
+      <!-- =========================
+           LISTA DE IMAGENS
+      ========================== -->
+
+      <section class="gallery-admin-section">
+        <h2>
+          Imagens da galeria
+        </h2>
+
+        <div class="gallery-admin-actions">
+          <p
+            id="selected-images-count"
+            aria-live="polite"
+          >
+            Nenhuma imagem selecionada
+          </p>
+
+          <button
+            id="delete-selected-button"
+            class="delete-button"
+            type="button"
+            disabled
+          >
+            Excluir selecionadas
+          </button>
+        </div>
+
+        <div
+          id="admin-gallery"
+          class="admin-gallery"
+        ></div>
+
+        <p
+          id="gallery-admin-message"
+          class="admin-message"
+          role="status"
+          aria-live="polite"
+        ></p>
       </section>
     </section>
   </main>

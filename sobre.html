@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="script.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js" defer></script>
+<script src="site-images.js" defer></script>
+<script src="sobre.js" defer></script>
+<script src="menu.js" defer></script>
 <link rel="stylesheet" href="styles.css">
   <title>Sobre nós | Corpora Studio</title>
 
 </head>
 
-<body>
+<body data-page="sobre">
   <header class="header">
     <a class="logo" href="index.html" aria-label="Voltar para a página inicial">
       <!-- Reutilize aqui o caminho da logo do seu site -->
@@ -77,16 +81,15 @@
         </p>
 
         <section class="img-editorial">
-      <div class="editorial-image">
-        <img
-          src="img/Casamento hero.jpg"
-          alt="Casal caminhando em um campo"
-        >
+        <div
+  id="image-sobre-hero"
+  class="image-placeholder hero-image"
+>
+  <span class="image-label">
+    MEMÓRIAS COM PRESENÇA
+  </span>
+</div>
 
-        <span>
-          MEMÓRIAS COM PRESENÇA
-        </span>
-      </div>
     </section>
       </div>
     </section>
@@ -109,9 +112,19 @@ Não vendemos apenas fotografias. A Corpora Studios existe para transformar a pr
         </div>
 
         <div class="look-images">
-          <img src="img/Gestante 1.jpg" alt="Mulher grávida sorrindo em um campo" class="look-image-tall">
+          <img
+  id="image-sobre-olhar-1"
+  src=""
+  alt=""
+>
 
-          <img src="img/Familia 1.jpg" alt="Família sorrindo em um campo" class="look-image-short">
+
+          <img
+  id="image-sobre-olhar-2"
+  src=""
+  alt=""
+>
+
         </div>
 
         <p class="look-caption">
