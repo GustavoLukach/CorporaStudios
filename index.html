@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+
+  <title>Corpora Studios</title>
+</head>
+
+<body>
+  <header class="header">
+    <a class="logo" href="#inicio" aria-label="Voltar para o início">
+      <img
+        src="img/Corpora logo.png"
+        alt="Corpora Studios"
+      >
+    </a>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="menu-principal"
+    >
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav
+      class="nav-links"
+      id="menu-principal"
+      aria-label="Navegação principal"
+    >
+      <ul>
+        <li>
+          <a href="index.html#inicio">Galeria</a>
+        </li>
+
+        <li>
+          <a href="sobre.html">Sobre</a>
+        </li>
+
+        <li>
+          <a href="contato.html">Contato</a>
+        </li>
+      </ul>
+
+      <!-- Footer exclusivo do menu mobile -->
+      <div class="menu-footer">
+        <a
+          href="https://www.instagram.com/corpora.studios/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram
+        </a>
+
+        <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=corporastudios@gmail.com&amp;su=Quero%20agendar%20uma%20sess%C3%A3o" target="_blank" rel="noopener noreferrer">
+          E-mail
+        </a>
+
+        <a
+          href="https://wa.me/5511999999999"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <section class="hero" aria-labelledby="titulo-galeria">
+      <p class="eyebrow">GALERIA</p>
+
+      <h1 id="titulo-galeria">
+        Momentos em luz.
+      </h1>
+
+      <p>
+        Uma seleção de sessões que celebram a essência,
+        o movimento e a presença.
+      </p>
+    </section>
+
+    <section class="img-editorial">
+      <div class="editorial-image">
+        <img
+          src="img/Casamento hero.jpg"
+          alt="Casal caminhando em um campo"
+        >
+
+        <span>
+          MEMÓRIAS COM PRESENÇA
+        </span>
+      </div>
+    </section>
+
+    <section
+      class="categories-section"
+      aria-labelledby="titulo-categorias"
+    >
+      <p
+        class="section-label"
+        id="titulo-categorias"
+      >
+        EXPLORE POR CATEGORIA
+      </p>
+
+      <div class="categories" role="group" aria-label="Filtros da galeria">
+        <button
+          class="category-button active"
+          type="button"
+          data-filter="todos"
+        >
+          Todos
+        </button>
+
+        <button
+          class="category-button"
+          type="button"
+          data-filter="Corporativo"
+        >
+          Corporativo
+        </button>
+
+        <button
+          class="category-button"
+          type="button"
+          data-filter="gestante"
+        >
+          Gestante
+        </button>
+
+        <button
+          class="category-button"
+          type="button"
+          data-filter="Comercial"
+        >
+          Comercial
+        </button>
+
+        <button
+          class="category-button"
+          type="button"
+          data-filter="pessoal"
+        >
+          Pessoal
+        </button>
+      </div>
+    </section>
+
+    <section
+      class="gallery"
+      aria-label="Galeria de fotografias"
+    >
+      <div class="gallery-item" data-category="Corporativo"
+      data-title="Fotografia de casamento no campo">
+        <img
+          src="img/Corporativo 1.jpg"
+          alt="Fotografia de casamento no campo"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gallery-item" data-category="gestante">
+        <img
+          src="img/Gestante 1.jpg"
+          alt="Ensaio de gestante"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gallery-item" data-category="Comercial"
+      data-title="Fotografia comercial de produto">
+        <img
+          src="img/Comercial 1.jpg"
+          alt="Fotografia comercial de produto"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gallery-item" data-category="pessoal">
+        <img
+          src="img/Pessoal 1.jpg"
+          alt="Ensaio fotográfico pessoal"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gallery-item" data-category="Corporativo" data-title="Fotografia corporativa">
+        <img
+          src="img/Corporativo 2.jpg"
+          alt="Outro momento corporativo"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gallery-item" data-category="gestante">
+        <img
+          src="img/Gestante 2.jpg"
+          alt="Outro ensaio de gestante"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gallery-item" data-category="Comercial" data-title="Fotografia comercial de produto">
+        <img
+          src="img/Comercial 2.jpg"
+          alt="Outra fotografia comercial de produto"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gallery-item" data-category="pessoal">
+        <img
+          src="img/Pessoal 2.jpg"
+          alt="Outra fotografia pessoal"
+          loading="lazy"
+        >
+      </div>
+    </section>
+  </main>
+
+  <div
+  class="lightbox"
+  id="lightbox"
+  aria-hidden="true"
+  role="dialog"
+  aria-label="Visualização ampliada da imagem"
+>
+  <div class="lightbox-content">
+    <div class="lightbox-top">
+      <button
+        class="lightbox-close"
+        id="lightbox-close"
+        type="button"
+        aria-label="Fechar imagem"
+      >
+        ×
+      </button>
+
+      <span class="lightbox-counter" id="lightbox-counter">
+        1 / 24
+      </span>
+    </div>
+
+    <div class="lightbox-image-wrapper">
+      <img
+        class="lightbox-image"
+        id="lightbox-image"
+        src=""
+        alt=""
+      >
+    </div>
+
+    <div class="lightbox-info">
+      <h2 id="lightbox-title">Nome do ensaio</h2>
+      <p id="lightbox-category">Categoria</p>
+    </div>
+
+    <div class="lightbox-navigation">
+      <button
+        class="lightbox-prev"
+        id="lightbox-prev"
+        type="button"
+        aria-label="Imagem anterior"
+      >
+        ‹
+      </button>
+
+      <button
+        class="lightbox-next"
+        id="lightbox-next"
+        type="button"
+        aria-label="Próxima imagem"
+      >
+        ›
+      </button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Footer principal da página -->
+  <footer class="site-footer" id="contato">
+    <div class="site-footer-links">
+      <a
+        href="https://www.instagram.com/corpora.studios/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Instagram
+      </a>
+
+      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=corporastudios@gmail.com&amp;su=Quero%20agendar%20uma%20sess%C3%A3o" target="_blank" rel="noopener noreferrer">
+        E-mail
+      </a>
+
+      <a
+        href="https://wa.me/5511999999999"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        WhatsApp
+      </a>
+    </div>
+
+    <p>
+      © 2026 Corpora Studios. Todos os direitos reservados.
+    </p>
+  </footer>
+</body>
+</html>
