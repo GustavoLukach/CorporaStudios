@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin | Corpora Studio</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js" defer></script>
+</head>
+
+<body>
+  <main class="admin-page">
+    <section id="login-section" class="admin-card">
+      <p class="section-label">CORPORA STUDIO</p>
+
+      <h1>Área administrativa</h1>
+
+      <form id="login-form">
+        <div class="form-field">
+          <label for="admin-email">E-mail</label>
+
+          <input
+            type="email"
+            id="admin-email"
+            placeholder="seuemail@exemplo.com"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="admin-password">Senha</label>
+
+          <input
+            type="password"
+            id="admin-password"
+            placeholder="Digite sua senha"
+            required
+          >
+        </div>
+
+        <button class="form-submit" type="submit">
+          Entrar
+        </button>
+
+        <p id="login-message" class="admin-message"></p>
+      </form>
+    </section>
+
+    <section id="admin-section" class="admin-card" hidden>
+      <div class="admin-header">
+        <div>
+          <p class="section-label">PAINEL PRIVADO</p>
+          <h1>Gerenciar galeria</h1>
+        </div>
+
+        <button id="logout-button" type="button">
+          Sair
+        </button>
+      </div>
+
+      <form id="upload-form">
+        <div class="form-field">
+          <label for="image-file">Imagem</label>
+
+          <input
+            type="file"
+            id="image-file"
+            accept="image/*"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="image-title">Título</label>
+
+          <input
+            type="text"
+            id="image-title"
+            placeholder="Ex.: Memórias com presença"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="image-alt">Descrição da imagem</label>
+
+          <input
+            type="text"
+            id="image-alt"
+            placeholder="Descreva a imagem"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="image-category">Categoria</label>
+
+          <select id="image-category" required>
+            <option value="casamento">Casamento</option>
+            <option value="gestante">Gestante</option>
+            <option value="familia">Família</option>
+            <option value="pessoal">Pessoal</option>
+          </select>
+        </div>
+
+        <button class="form-submit" type="submit">
+          Adicionar imagem
+        </button>
+
+        <p id="upload-message" class="admin-message"></p>
+      </form>
+
+      <section>
+        <h2>Imagens cadastradas</h2>
+
+        <div id="admin-gallery"></div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
