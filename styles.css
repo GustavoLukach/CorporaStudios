@@ -1774,13 +1774,31 @@ body.dark-mode {
 }
 
 body.dark-mode .logo img {
-  filter: brightness(0) saturate(100%) invert(82%) sepia(17%) saturate(440%) hue-rotate(351deg) brightness(93%) contrast(88%);
-  opacity: 0.96;
+  visibility: hidden;
+}
+
+body.dark-mode .logo::after,
+body.halloween-active .logo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  background: #d8c5ad;
+  -webkit-mask: url("img/Corpora logo.png") center / contain no-repeat;
+  mask: url("img/Corpora logo.png") center / contain no-repeat;
 }
 
 body.halloween-active .logo img {
-  filter: brightness(0) saturate(100%) invert(65%) sepia(31%) saturate(700%) hue-rotate(351deg) brightness(88%) contrast(90%);
-  opacity: 0.94;
+  visibility: hidden;
+}
+
+body.halloween-active .logo img {
+  opacity: 1;
+}
+
+body.halloween-active .logo::after {
+  background: #a96b32;
 }
 
 body.dark-mode .header,
