@@ -1591,20 +1591,20 @@ body.halloween-active .halloween-atmosphere {
   height: var(--size);
   border-radius: 50%;
   background: #a96b32;
-  box-shadow: 0 0 8px rgba(169, 107, 50, 0.35);
-  opacity: 0.28;
+  box-shadow: 0 0 10px rgba(169, 107, 50, 0.48);
+  opacity: 0.42;
   animation: halloween-fall var(--duration) linear var(--delay) infinite;
 }
 
 .halloween-particle:nth-child(3n) {
   border-radius: 1px 5px 1px 5px;
   background: #6e4530;
-  opacity: 0.2;
+  opacity: 0.32;
 }
 
 .halloween-particle:nth-child(4n) {
   background: #d49a55;
-  opacity: 0.16;
+  opacity: 0.28;
 }
 
 .halloween-toggle {

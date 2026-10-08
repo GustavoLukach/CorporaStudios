@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js" defer></script>
-<script src="site-images.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+	<script src="supabase-client.js" defer></script>
+	<script src="event-theme.js?v=halloween-3" defer></script>
+	<script src="site-images.js" defer></script>
 <script src="sobre.js" defer></script>
 <script src="menu.js" defer></script>
 <link rel="stylesheet" href="styles.css">
@@ -206,5 +207,15 @@ Não vendemos apenas fotografias. A Corpora Studios existe para transformar a pr
 
     <p>© 2026 Corpora Studio</p>
   </footer>
+
+  <button
+    class="halloween-toggle"
+    type="button"
+    data-halloween-toggle
+    aria-pressed="true"
+    aria-label="Desativar efeitos de Halloween"
+  >
+    Desativar efeitos
+  </button>
 </body>
 </html>
