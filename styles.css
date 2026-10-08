@@ -1570,6 +1570,15 @@ body.lightbox-aberto {
   transition: opacity 0.6s ease;
 }
 
+.halloween-atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(169, 107, 50, 0.08), transparent 26%),
+    radial-gradient(circle at 88% 78%, rgba(110, 69, 48, 0.07), transparent 24%);
+}
+
 body.halloween-active .halloween-atmosphere {
   opacity: 1;
 }
@@ -1599,18 +1608,38 @@ body.halloween-active .halloween-atmosphere {
 }
 
 .halloween-toggle {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 70;
-  padding: 9px 12px;
-  border: 1px solid rgba(23, 21, 19, 0.25);
+  position: fixed !important;
+  right: 22px !important;
+  bottom: 22px !important;
+  z-index: 9999 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 9px 13px;
+  border: 1px solid rgba(110, 69, 48, 0.36);
+  border-radius: 999px;
   color: var(--text-color);
-  background: rgba(216, 197, 173, 0.78);
+  background: rgba(245, 240, 232, 0.94);
   backdrop-filter: blur(8px);
+  box-shadow: 0 8px 28px rgba(23, 21, 19, 0.16);
   font: 11px Arial, sans-serif;
+  letter-spacing: 0.02em;
   cursor: pointer;
   transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.halloween-toggle::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #a96b32;
+  box-shadow: 0 0 0 3px rgba(169, 107, 50, 0.12);
+}
+
+.halloween-toggle[hidden] {
+  display: none !important;
 }
 
 .halloween-toggle:hover,
@@ -1637,5 +1666,5 @@ body.halloween-active .site-footer {
 }
 
 @media (max-width: 600px) {
-  .halloween-toggle { right: 12px; bottom: 12px; font-size: 10px; }
+  .halloween-toggle { right: 14px !important; bottom: 14px !important; font-size: 10px; }
 }
