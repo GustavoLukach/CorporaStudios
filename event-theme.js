@@ -26,12 +26,12 @@
     const layer = document.createElement("div");
     layer.className = "halloween-atmosphere";
     layer.setAttribute("aria-hidden", "true");
-    for (let index = 0; index < 14; index += 1) {
+    for (let index = 0; index < 20; index += 1) {
       const particle = document.createElement("i");
       particle.className = "halloween-particle";
       particle.style.setProperty("--x", `${Math.round(Math.random() * 100)}%`);
-      particle.style.setProperty("--delay", `${(Math.random() * 9).toFixed(2)}s`);
-      particle.style.setProperty("--duration", `${(10 + Math.random() * 10).toFixed(2)}s`);
+      particle.style.setProperty("--delay", `${(Math.random() * 3).toFixed(2)}s`);
+      particle.style.setProperty("--duration", `${(8 + Math.random() * 7).toFixed(2)}s`);
       particle.style.setProperty("--drift", `${Math.round(-35 + Math.random() * 70)}px`);
       particle.style.setProperty("--size", `${(2 + Math.random() * 3).toFixed(1)}px`);
       layer.appendChild(particle);
