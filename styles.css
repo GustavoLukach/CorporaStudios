@@ -1773,6 +1773,12 @@ body.dark-mode {
   background: var(--background-color);
 }
 
+body.dark-mode .logo img,
+body.halloween-active .logo img {
+  filter: brightness(0) invert(1);
+  opacity: 0.94;
+}
+
 body.dark-mode .header,
 body.dark-mode .nav-links,
 body.dark-mode .site-footer,
