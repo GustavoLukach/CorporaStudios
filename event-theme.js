@@ -1,6 +1,6 @@
 /* Tema sazonal: Halloween editorial, discreto e reversível. */
 (() => {
-  const STORAGE_KEY = "corpora-halloween-effects";
+  const STORAGE_KEY = "corpora-halloween-effects-v2";
   const SETTING_KEY = "halloween";
   const body = document.body;
   const toggle = document.querySelector("[data-halloween-toggle]");
@@ -71,10 +71,6 @@
     window.localStorage.setItem(STORAGE_KEY, nextEnabled ? "on" : "off");
     applyTheme();
   });
-
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
-    window.localStorage.setItem(STORAGE_KEY, "off");
-  }
 
   loadGlobalSetting();
 })();
