@@ -41,7 +41,7 @@
 
   function createBats() {
     document
-      .querySelectorAll(".gallery-item:nth-child(7n + 1), .gallery-item:nth-child(7n + 4)")
+      .querySelectorAll(".gallery-item")
       .forEach((card) => addBat(card, "halloween-bat"));
 
     document
