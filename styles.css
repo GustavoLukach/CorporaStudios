@@ -1754,3 +1754,144 @@ body.halloween-active .lightbox-info p {
     height: 19px;
   }
 }
+
+/* =========================
+   MODO ESCURO PERMANENTE
+========================= */
+body.dark-mode {
+  --background-color: #171513;
+  --text-color: #d8c5ad;
+  --secondary-color: #b49a7d;
+  --light-color: #302923;
+  --dark-color: #d8c5ad;
+  --bege: #171513;
+  --branco: #211c19;
+  --preto: #d8c5ad;
+  --cinza: #b49a7d;
+  --linha: rgba(216, 197, 173, 0.22);
+  color: var(--text-color);
+  background: var(--background-color);
+}
+
+body.dark-mode .header,
+body.dark-mode .nav-links,
+body.dark-mode .site-footer,
+body.dark-mode .process-section,
+body.dark-mode .final-section,
+body.dark-mode .contact-form-section,
+body.dark-mode .contact-hero {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+body.dark-mode .header,
+body.dark-mode .site-footer {
+  border-color: rgba(216, 197, 173, 0.24);
+}
+
+body.dark-mode .nav-links a,
+body.dark-mode .site-footer a,
+body.dark-mode .site-footer p,
+body.dark-mode .hero p:not(.eyebrow),
+body.dark-mode .section-text,
+body.dark-mode .form-field label {
+  color: var(--secondary-color);
+}
+
+body.dark-mode .nav-links a:hover,
+body.dark-mode .site-footer a:hover {
+  color: var(--text-color);
+}
+
+body.dark-mode .category-button {
+  color: var(--text-color);
+  background: var(--light-color);
+  border: 1px solid rgba(216, 197, 173, 0.18);
+}
+
+body.dark-mode .category-button.active,
+body.dark-mode .category-button:hover {
+  color: #171513;
+  background: #d8c5ad;
+}
+
+body.dark-mode .gallery-item {
+  background: #211c19;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+  color: var(--text-color);
+  background: #211c19;
+  border-color: rgba(216, 197, 173, 0.28);
+}
+
+body.dark-mode .contact-form input::placeholder,
+body.dark-mode .contact-form textarea::placeholder {
+  color: rgba(180, 154, 125, 0.72);
+}
+
+body.dark-mode .form-submit,
+body.dark-mode .schedule-button {
+  color: #171513;
+  background: #d8c5ad;
+  border-color: #d8c5ad;
+}
+
+body.dark-mode .lightbox-content {
+  color: var(--text-color);
+  background: #211c19;
+}
+
+body.dark-mode .lightbox-close,
+body.dark-mode .lightbox-prev,
+body.dark-mode .lightbox-next,
+body.dark-mode .lightbox-info h2 {
+  color: var(--text-color);
+}
+
+body.dark-mode .lightbox-counter,
+body.dark-mode .lightbox-info p {
+  color: var(--secondary-color);
+}
+
+.dark-mode-toggle {
+  position: fixed !important;
+  right: 22px !important;
+  bottom: 68px !important;
+  z-index: 10000 !important;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(126, 112, 96, 0.38);
+  border-radius: 50%;
+  color: #d8c5ad;
+  background: rgba(23, 21, 19, 0.94);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(8px);
+  font: 21px/1 Arial, sans-serif;
+  cursor: pointer;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.dark-mode-toggle:hover,
+.dark-mode-toggle:focus-visible {
+  color: #171513;
+  background: #d8c5ad;
+  transform: translateY(-2px);
+}
+
+body:not(.dark-mode) .dark-mode-toggle {
+  color: #171513;
+  background: rgba(216, 197, 173, 0.94);
+}
+
+@media (max-width: 600px) {
+  .dark-mode-toggle {
+    right: 14px !important;
+    bottom: 60px !important;
+  }
+}
