@@ -85,8 +85,8 @@
     }
   }
 
-  function enableDragging() {
-    if (!toggle) return;
+  function enableDragging(control, storageKey, onMove) {
+    if (!control) return;
     let pointerId = null;
     let startX = 0;
     let startY = 0;
@@ -94,56 +94,88 @@
     let startTop = 0;
     let moved = false;
 
-    toggle.addEventListener("pointerdown", (event) => {
+    control.addEventListener("pointerdown", (event) => {
       if (event.button !== undefined && event.button !== 0) return;
-      const rect = toggle.getBoundingClientRect();
+      const rect = control.getBoundingClientRect();
       pointerId = event.pointerId;
       startX = event.clientX;
       startY = event.clientY;
       startLeft = rect.left;
       startTop = rect.top;
       moved = false;
-      toggle.setPointerCapture?.(pointerId);
+      control.setPointerCapture?.(pointerId);
     });
 
-    toggle.addEventListener("pointermove", (event) => {
+    control.addEventListener("pointermove", (event) => {
       if (pointerId !== event.pointerId) return;
       const deltaX = event.clientX - startX;
       const deltaY = event.clientY - startY;
       if (Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4) moved = true;
-      if (moved) {
-        event.preventDefault();
+      if (!moved) return;
+
+      event.preventDefault();
+      if (control === toggle) {
         setFloatingPosition(startLeft + deltaX, startTop + deltaY);
+      } else {
+        const margin = 10;
+        control.style.setProperty("left", `${clamp(startLeft + deltaX, margin, window.innerWidth - control.offsetWidth - margin)}px`, "important");
+        control.style.setProperty("top", `${clamp(startTop + deltaY, margin, window.innerHeight - control.offsetHeight - margin)}px`, "important");
+        control.style.setProperty("right", "auto", "important");
+        control.style.setProperty("bottom", "auto", "important");
       }
+      onMove?.();
     });
 
     const finishDrag = (event) => {
       if (pointerId !== event.pointerId) return;
       if (moved) {
-        const rect = toggle.getBoundingClientRect();
+        const rect = control.getBoundingClientRect();
         window.localStorage.setItem(
-          "corpora-halloween-toggle-position",
+          storageKey,
           JSON.stringify({ left: rect.left, top: rect.top })
         );
-        toggle.dataset.dragged = "true";
+        control.dataset.dragged = "true";
       }
       pointerId = null;
     };
 
-    toggle.addEventListener("pointerup", finishDrag);
-    toggle.addEventListener("pointercancel", finishDrag);
-    toggle.addEventListener("click", (event) => {
-      if (toggle.dataset.dragged === "true") {
+    control.addEventListener("pointerup", finishDrag);
+    control.addEventListener("pointercancel", finishDrag);
+    control.addEventListener("click", (event) => {
+      if (control.dataset.dragged === "true") {
         event.preventDefault();
         event.stopImmediatePropagation();
-        delete toggle.dataset.dragged;
+        delete control.dataset.dragged;
       }
     }, true);
 
     window.addEventListener("resize", () => {
-      const rect = toggle.getBoundingClientRect();
-      setFloatingPosition(rect.left, rect.top);
+      const rect = control.getBoundingClientRect();
+      if (control === toggle) {
+        setFloatingPosition(rect.left, rect.top);
+      } else {
+        const margin = 10;
+        control.style.setProperty("left", `${clamp(rect.left, margin, window.innerWidth - control.offsetWidth - margin)}px`, "important");
+        control.style.setProperty("top", `${clamp(rect.top, margin, window.innerHeight - control.offsetHeight - margin)}px`, "important");
+      }
+      onMove?.();
     });
+  }
+
+  function restoreControlPosition(control, storageKey, onMove) {
+    if (!control) return;
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(storageKey) || "null");
+      if (!saved || !Number.isFinite(saved.left) || !Number.isFinite(saved.top)) return;
+      const margin = 10;
+      control.style.setProperty("left", `${clamp(saved.left, margin, window.innerWidth - control.offsetWidth - margin)}px`, "important");
+      control.style.setProperty("top", `${clamp(saved.top, margin, window.innerHeight - control.offsetHeight - margin)}px`, "important");
+      control.style.setProperty("right", "auto", "important");
+      control.style.setProperty("bottom", "auto", "important");
+      onMove?.();
+    } catch (error) {
+      console.warn("Não foi possível restaurar a posição do controle:", error);
+    }
   }
 
   function updateToggleLabel(active) {
@@ -232,8 +264,18 @@
     applyTheme();
   });
 
-  enableDragging();
-  restoreFloatingPosition();
+  enableDragging(
+    toggle,
+    "corpora-halloween-toggle-position",
+    positionDarkToggle
+  );
+  enableDragging(darkToggle, "corpora-dark-toggle-position");
+  restoreControlPosition(
+    toggle,
+    "corpora-halloween-toggle-position",
+    positionDarkToggle
+  );
+  restoreControlPosition(darkToggle, "corpora-dark-toggle-position");
 
   document.addEventListener("gallery:loaded", () => {
     if (globalEnabled && visitorEnabled()) createBats();

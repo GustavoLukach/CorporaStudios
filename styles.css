@@ -1901,8 +1901,13 @@ body.dark-mode .lightbox-info p {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(8px);
   font: 21px/1 Arial, sans-serif;
-  cursor: pointer;
+  cursor: grab;
+  touch-action: none;
   transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.dark-mode-toggle:active {
+  cursor: grabbing;
 }
 
 .dark-mode-toggle:hover,
