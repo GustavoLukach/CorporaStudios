@@ -1661,8 +1661,9 @@ body.halloween-active .site-footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .halloween-atmosphere { display: none; }
-  .halloween-toggle { display: none; }
+  .halloween-particle {
+    animation-duration: 20s;
+  }
 }
 
 @media (max-width: 600px) {
