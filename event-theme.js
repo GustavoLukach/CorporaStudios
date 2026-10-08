@@ -92,5 +92,9 @@
     applyTheme();
   });
 
+  document.addEventListener("gallery:loaded", () => {
+    if (globalEnabled && visitorEnabled()) createBats();
+  });
+
   loadGlobalSetting();
 })();
