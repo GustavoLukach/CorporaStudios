@@ -29,6 +29,15 @@ const deleteSelectedButton = document.querySelector(
 const selectedImagesCount = document.querySelector(
   "#selected-images-count"
 );
+const halloweenEnabled = document.querySelector(
+  "#halloween-enabled"
+);
+const saveHalloweenButton = document.querySelector(
+  "#save-halloween-button"
+);
+const halloweenMessage = document.querySelector(
+  "#halloween-message"
+);
 const imagensSelecionadas = new Map();
 
 
@@ -100,6 +109,75 @@ function mostrarMensagemGaleria(
   galleryAdminMessage.textContent = mensagem;
   galleryAdminMessage.className = `admin-message ${tipo}`;
 }
+
+function mostrarMensagemHalloween(mensagem, tipo = "") {
+  if (!halloweenMessage) return;
+  halloweenMessage.textContent = mensagem;
+  halloweenMessage.className = `admin-message ${tipo}`;
+}
+
+async function carregarConfiguracaoHalloween() {
+  if (!halloweenEnabled) return;
+
+  const { data, error } = await supabaseClient
+    .from("site_settings")
+    .select("setting_value")
+    .eq("setting_key", "halloween")
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao carregar configuração sazonal:", error);
+    halloweenEnabled.checked = true;
+    mostrarMensagemHalloween(
+      "Não foi possível carregar a configuração. Execute a migration do Supabase.",
+      "error"
+    );
+    return;
+  }
+
+  halloweenEnabled.checked = data?.setting_value?.enabled !== false;
+  mostrarMensagemHalloween(
+    halloweenEnabled.checked ? "Evento ativo para os visitantes." : "Evento desativado para os visitantes."
+  );
+}
+
+async function salvarConfiguracaoHalloween() {
+  if (!halloweenEnabled || !saveHalloweenButton) return;
+
+  saveHalloweenButton.disabled = true;
+  saveHalloweenButton.textContent = "Salvando...";
+  mostrarMensagemHalloween("Salvando configuração...");
+
+  const { error } = await supabaseClient
+    .from("site_settings")
+    .upsert(
+      {
+        setting_key: "halloween",
+        setting_value: { enabled: halloweenEnabled.checked },
+        updated_at: new Date().toISOString()
+      },
+      { onConflict: "setting_key" }
+    );
+
+  saveHalloweenButton.disabled = false;
+  saveHalloweenButton.textContent = "Salvar configuração";
+
+  if (error) {
+    console.error("Erro ao salvar configuração sazonal:", error);
+    mostrarMensagemHalloween(
+      "Não foi possível salvar. Verifique a migration e as permissões do Supabase.",
+      "error"
+    );
+    return;
+  }
+
+  mostrarMensagemHalloween(
+    halloweenEnabled.checked ? "Tema ativado para todos os visitantes." : "Tema desativado para todos os visitantes.",
+    "success"
+  );
+}
+
+saveHalloweenButton?.addEventListener("click", salvarConfiguracaoHalloween);
 
 function bloquearUpload(bloquear) {
   const submitButton = uploadForm?.querySelector(
@@ -181,6 +259,7 @@ async function verificarSessao() {
   }
 
   mostrarPainel();
+  carregarConfiguracaoHalloween();
   carregarImagensDaGaleria();
 }
 
