@@ -4,6 +4,8 @@
   const SETTING_KEY = "halloween";
   const body = document.body;
   const toggle = document.querySelector("[data-halloween-toggle]");
+  const darkToggle = document.querySelector("[data-dark-toggle]");
+  const DARK_MODE_KEY = "corpora-dark-mode";
   let globalEnabled = true;
 
   const batSvg = `
@@ -15,6 +17,23 @@
 
   function visitorEnabled() {
     return window.localStorage.getItem(STORAGE_KEY) !== "off";
+  }
+
+  function darkModeEnabled() {
+    return window.localStorage.getItem(DARK_MODE_KEY) === "on";
+  }
+
+  function updateDarkToggle() {
+    if (!darkToggle) return;
+    const active = darkModeEnabled();
+    darkToggle.setAttribute("aria-pressed", String(active));
+    darkToggle.setAttribute(
+      "aria-label",
+      active ? "Desativar modo escuro" : "Ativar modo escuro"
+    );
+    darkToggle.title = active ? "Desativar modo escuro" : "Ativar modo escuro";
+    const icon = darkToggle.querySelector("span");
+    if (icon) icon.textContent = active ? "☀" : "☾";
   }
 
   function clamp(value, min, max) {
@@ -30,6 +49,28 @@
     toggle.style.setProperty("top", `${clamp(top, margin, maxTop)}px`, "important");
     toggle.style.setProperty("right", "auto", "important");
     toggle.style.setProperty("bottom", "auto", "important");
+    positionDarkToggle();
+  }
+
+  function positionDarkToggle() {
+    if (!toggle || !darkToggle || toggle.hidden) return;
+    const eventRect = toggle.getBoundingClientRect();
+    const darkRect = darkToggle.getBoundingClientRect();
+    const left = eventRect.right - darkRect.width;
+    const top = eventRect.top - darkRect.height - 8;
+    const margin = 10;
+    darkToggle.style.setProperty(
+      "left",
+      `${clamp(left, margin, window.innerWidth - darkRect.width - margin)}px`,
+      "important"
+    );
+    darkToggle.style.setProperty(
+      "top",
+      `${clamp(top, margin, window.innerHeight - darkRect.height - margin)}px`,
+      "important"
+    );
+    darkToggle.style.setProperty("right", "auto", "important");
+    darkToggle.style.setProperty("bottom", "auto", "important");
   }
 
   function restoreFloatingPosition() {
@@ -114,6 +155,7 @@
       "aria-label",
       active ? "Desativar tema de Halloween" : "Ativar tema de Halloween"
     );
+    positionDarkToggle();
   }
 
   function addBat(element, className) {
@@ -146,7 +188,9 @@
   function applyTheme() {
     const active = globalEnabled && visitorEnabled();
     body.classList.toggle("halloween-active", active);
+    body.classList.toggle("dark-mode", darkModeEnabled() || active);
     updateToggleLabel(active);
+    updateDarkToggle();
     if (active) createBats();
     else removeBats();
   }
@@ -177,6 +221,14 @@
   toggle?.addEventListener("click", () => {
     const nextEnabled = !visitorEnabled();
     window.localStorage.setItem(STORAGE_KEY, nextEnabled ? "on" : "off");
+    applyTheme();
+  });
+
+  darkToggle?.addEventListener("click", () => {
+    window.localStorage.setItem(
+      DARK_MODE_KEY,
+      darkModeEnabled() ? "off" : "on"
+    );
     applyTheme();
   });
 
