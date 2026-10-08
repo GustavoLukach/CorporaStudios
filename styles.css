@@ -1699,8 +1699,13 @@ body.halloween-active .lightbox-info p {
   backdrop-filter: blur(8px);
   font: 11px Arial, sans-serif;
   letter-spacing: 0.02em;
-  cursor: pointer;
+  cursor: grab;
+  touch-action: none;
   transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.halloween-toggle:active {
+  cursor: grabbing;
 }
 
 .halloween-toggle::before {
