@@ -1773,9 +1773,13 @@ body.dark-mode {
   background: var(--background-color);
 }
 
-body.dark-mode .logo img,
+body.dark-mode .logo img {
+  filter: brightness(0) saturate(100%) invert(82%) sepia(17%) saturate(440%) hue-rotate(351deg) brightness(93%) contrast(88%);
+  opacity: 0.96;
+}
+
 body.halloween-active .logo img {
-  filter: brightness(0) invert(1);
+  filter: brightness(0) saturate(100%) invert(65%) sepia(31%) saturate(700%) hue-rotate(351deg) brightness(88%) contrast(90%);
   opacity: 0.94;
 }
 
