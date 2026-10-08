@@ -17,6 +17,94 @@
     return window.localStorage.getItem(STORAGE_KEY) !== "off";
   }
 
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function setFloatingPosition(left, top) {
+    if (!toggle) return;
+    const margin = 10;
+    const maxLeft = Math.max(margin, window.innerWidth - toggle.offsetWidth - margin);
+    const maxTop = Math.max(margin, window.innerHeight - toggle.offsetHeight - margin);
+    toggle.style.setProperty("left", `${clamp(left, margin, maxLeft)}px`, "important");
+    toggle.style.setProperty("top", `${clamp(top, margin, maxTop)}px`, "important");
+    toggle.style.setProperty("right", "auto", "important");
+    toggle.style.setProperty("bottom", "auto", "important");
+  }
+
+  function restoreFloatingPosition() {
+    if (!toggle) return;
+    try {
+      const saved = JSON.parse(window.localStorage.getItem("corpora-halloween-toggle-position") || "null");
+      if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
+        setFloatingPosition(saved.left, saved.top);
+      }
+    } catch (error) {
+      console.warn("Não foi possível restaurar a posição do tema:", error);
+    }
+  }
+
+  function enableDragging() {
+    if (!toggle) return;
+    let pointerId = null;
+    let startX = 0;
+    let startY = 0;
+    let startLeft = 0;
+    let startTop = 0;
+    let moved = false;
+
+    toggle.addEventListener("pointerdown", (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+      const rect = toggle.getBoundingClientRect();
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startY = event.clientY;
+      startLeft = rect.left;
+      startTop = rect.top;
+      moved = false;
+      toggle.setPointerCapture?.(pointerId);
+    });
+
+    toggle.addEventListener("pointermove", (event) => {
+      if (pointerId !== event.pointerId) return;
+      const deltaX = event.clientX - startX;
+      const deltaY = event.clientY - startY;
+      if (Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4) moved = true;
+      if (moved) {
+        event.preventDefault();
+        setFloatingPosition(startLeft + deltaX, startTop + deltaY);
+      }
+    });
+
+    const finishDrag = (event) => {
+      if (pointerId !== event.pointerId) return;
+      if (moved) {
+        const rect = toggle.getBoundingClientRect();
+        window.localStorage.setItem(
+          "corpora-halloween-toggle-position",
+          JSON.stringify({ left: rect.left, top: rect.top })
+        );
+        toggle.dataset.dragged = "true";
+      }
+      pointerId = null;
+    };
+
+    toggle.addEventListener("pointerup", finishDrag);
+    toggle.addEventListener("pointercancel", finishDrag);
+    toggle.addEventListener("click", (event) => {
+      if (toggle.dataset.dragged === "true") {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        delete toggle.dataset.dragged;
+      }
+    }, true);
+
+    window.addEventListener("resize", () => {
+      const rect = toggle.getBoundingClientRect();
+      setFloatingPosition(rect.left, rect.top);
+    });
+  }
+
   function updateToggleLabel(active) {
     if (!toggle) return;
     toggle.hidden = !globalEnabled;
@@ -91,6 +179,9 @@
     window.localStorage.setItem(STORAGE_KEY, nextEnabled ? "on" : "off");
     applyTheme();
   });
+
+  enableDragging();
+  restoreFloatingPosition();
 
   document.addEventListener("gallery:loaded", () => {
     if (globalEnabled && visitorEnabled()) createBats();
